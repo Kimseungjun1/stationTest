@@ -74,7 +74,7 @@
 	 			<td><a href="/stationTest/my/mycheck.jsp">마이페이지</a></td>
 	 		</tr>
 	 		 <%
-	 		 	}
+	 		 	} 
 	 		 %>
 	 		
 	 	</table>
