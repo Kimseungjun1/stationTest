@@ -10,11 +10,15 @@
 	MemberT login = (MemberT)session.getAttribute("loginUser");
 
 	String mgrade = "";
+	int midx_ = 0;
 
 	if(login != null){
 		mgrade =  login.getMgrade();
+		midx_ = login.getMidx(); 
 		
 	}
+	
+	request.setCharacterEncoding("UTF-8");
 	
 	String searchValue = request.getParameter("searchValue");
 	String searchType = request.getParameter("searchType");
@@ -147,18 +151,12 @@
 			</tbody>
 				
 		</table>
-			
-			<%
-				
-				if(login != null){ 
-			%>
-								
-			<input type="button" value="등록" onclick="location.href='insert.jsp'">
-			<br>
-			<%
-			}
-			%>
 		
+		<%if(login != null){ %>		
+			<input type="button" value="Q&A 작성" onclick="goinsert(this)">
+			<br>
+		<%} %>
+					
 		<%
 			if(paging.getStartPage() > 1){
 		%>
@@ -253,7 +251,14 @@
 	function goqna(obj){
 		var B = $(obj).parent().prev().text();
 		
-			location.href="view.jsp?qidx="+B;
+			location.href='view.jsp?qidx='+B;
+	}
+	
+	function goinsert(obj){
+				
+		location.href='insert.jsp?midx=<%=midx_%>';
+				
+		
 	}
 	</script>
 	

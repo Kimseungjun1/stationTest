@@ -23,10 +23,6 @@
 					+" ntcontent = '"+ntcontent+"', "
 					+" ntdate = '"+ntdate+"' "
 					+" where ntidx="+ntidx;
-		System.out.println(ntidx);
-		System.out.println(nttitle);
-		System.out.println(ntcontent);
-		System.out.println(ntdate);
 		
 		psmt = conn.prepareStatement(sql);
 		

@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="boardWeb.vo.*" %>
 <%@ page import="boardWeb.util.*" %>
+<%@ page import= "java.util.*" %>
 
 <%
 	
@@ -22,12 +23,17 @@
 	PreparedStatement psmt = null;
 	ResultSet rs = null;
 	
+	PreparedStatement psmtReply = null;
+	ResultSet rsReply = null;
+	
 	String qtitle_ = "";
 	String qcontent_ = "";
 	String mname_ = "";
 	String qdate_ = "";
 	int qidx_ = 0;
 	int midx_ = 0;
+	
+	ArrayList<Reply> rList = new ArrayList<>();
 	
 	try{
 		conn = DBManager.getConnection();
@@ -36,7 +42,9 @@
 				   + " b.Qcontent, b.Qdate, TO_char(b.qdate,'YYYY-MM-DD'), "
 				   + " a.midx "
 				   + " FROM memberT a "
-				   + " right JOIN qna b ON a.midx=b.midx ";
+				   + " right JOIN qna b ON a.midx=b.midx "
+				   + " where b.qidx="+qidx;
+		
 		psmt = conn.prepareStatement(sql);
 		rs = psmt.executeQuery();
 		
@@ -44,7 +52,7 @@
 			qtitle_ = rs.getString("qtitle");
 			qcontent_ = rs.getString("qcontent");
 			mname_ = rs.getString("mname");
-			qdate_ = rs.getString("TO_char(b.qdate,'YYYY-MM-DD')");
+			qdate_ = rs.getString("TO_CHAR(b.qdate,'YYYY-MM-DD')");
 			qidx_ = rs.getInt("qidx");
 			midx_ = rs.getInt("midx");
 		}
@@ -79,7 +87,7 @@
 	<div class="divright">
 	
 		<form action = "modify.jsp" method="post">
-			<input type="hidden" name="ntidx" value="<%=qidx_ %>">
+			<input type="hidden" name="qidx" value="<%=qidx_ %>">
 				<table border="1" style="width:1000px;" >
 				<thead>
 					<tr>
@@ -111,6 +119,44 @@
 				<%}
 				%>		
 			</form>
+			
+			<%-- <div class="replayArea">
+				<div class="replyList">
+				<table border="1" id="reply"> 
+					<tbody>
+						<% for(Reply r : rList){ %>
+								<tr>
+									<td><%=r.getMembername()%><input type='hidden' name='ridx' value='"<%=r.getRidx()%>"'></td>
+									<td><%=r.getRcontent()%></td>
+									
+									<% if(login != null && (login.getMidx() == r.getMidx())){ %>
+									<td>
+										<input type="button" value="수정" onclick='modifyFn(this)'>
+										<input type="button" value="삭제" onclick='deleteFnReply(this)'>
+									</td>
+									<%} %>
+									
+								</tr>
+						
+						<%} %>
+					</tbody>
+				</table>
+				</div>
+				<div class="replyInput">
+					<form name= "reply">
+					<input type="hidden" name="bidx" value="<%=bidx%>">
+						<p>
+							<label>
+								내용 : <input type="text" size="50" name="rcontent">
+							</label>
+						</p>
+						<p>
+							<input type="button" value="저장" onclick="loginFn()">
+						</p>
+					
+					</form>
+				</div> --%>
+		
 	
 		
 		
@@ -170,7 +216,21 @@
 	
 	
 	<%@ include file="../footer.jsp" %>
+
+	<script>
+	function goModify(){
+		var login = '<%=login%>';
+		if(login != 'null' && login.getMidx() == midx_){
+			location.href = 'modify.jsp?qidx=<%=qidx_%>';
+		}
+	}
 	
+	function goDelete(){
+		
+			location.href = 'delete1.jsp?qidx=<%=qidx_%>';
+		
+	}
+	</script>
 	
 
 </body>

@@ -25,7 +25,9 @@
 	try{
 		conn = DBManager.getConnection();
 				
-		String sql = " SELECT nttitle, ntcontent, ntwriter, TO_CHAR(ntdate,'YYYY-MM-DD'),ntidx,midx FROM noticeT where ntidx= "+ntidx;
+		String sql = " SELECT nttitle, ntcontent, ntwriter, " 
+				+" TO_CHAR(ntdate,'YYYY-MM-DD'),ntidx,midx "
+				+" FROM noticeT where ntidx= "+ntidx;
 		
 		psmt = conn.prepareStatement(sql);
 		rs = psmt.executeQuery();

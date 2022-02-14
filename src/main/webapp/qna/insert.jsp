@@ -27,18 +27,19 @@
 	<section>
 	<div class="divright">
 		<form action = "insertOk.jsp" method="post">
+			
 			<table border="1" style="width:1000px;" >
 			<thead>
 				<tr>
 					<th>제목</th>
-					<td><input type="text" name="nttitle"></td>					
+					<td><input type="text" name="qtitle"></td>					
 					
 				</tr>			
 			</thead>
 			<tbody>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="ntcontent" rows="15"></textarea></td>
+					<td><textarea name="qcontent" rows="15"></textarea></td>
 				</tr>
 							
 			</tbody>
