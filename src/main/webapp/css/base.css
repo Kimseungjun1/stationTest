@@ -76,17 +76,24 @@ section{
 	color : red;
 }
 
-span{
-	display: none;
-}
 
+
+.check{
+	display:none;
+	margin:10px;
+	position:absolute;
+	height:30px;
+	font-size:9pt;
+}
 .divright{
 	width: 70%;
 	float: right;
+	
 }
 .divleft{
-	width: 28%;
+	width: 29%;
 	float: left;
 	border-right:1px solid black;
+	
 }
 

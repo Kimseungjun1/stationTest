@@ -57,6 +57,27 @@
 			midx_ = rs.getInt("midx");
 		}
 		
+		sql = " select * from qnareply r, memberT m where r.midx= m.midx and r.qidx ="+qidx+"order by qridx desc";
+		
+		psmtReply = conn.prepareStatement(sql);
+		
+		rsReply = psmtReply.executeQuery();
+		
+		while(rsReply.next()){
+			Reply reply = new Reply();
+			
+			reply.setQidx(rsReply.getInt("qidx"));
+			reply.setMidx(rsReply.getInt("midx"));
+			reply.setQridx(rsReply.getInt("qridx"));
+			reply.setQrcontent(rsReply.getString("qrcontent"));
+			reply.setQrdate(rsReply.getString("qrdate"));
+			reply.setMname(rsReply.getString("mname"));
+						
+			rList.add(reply);
+			
+		}
+		
+		
 		
 	}catch(Exception e){
 		e.printStackTrace();
@@ -76,6 +97,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="<%=request.getContextPath()%>/js/jquery-3.6.0.min.js"></script>
 <link href="<%=request.getContextPath() %>/css/base.css" rel="stylesheet">
 </head>
 <body>
@@ -108,7 +130,7 @@
 				</tbody>
 					
 			</table>
-						
+				
 				<input type="button" value="목록" onclick="location.href='qnalist.jsp'">
 				<%
 					
@@ -120,16 +142,33 @@
 				%>		
 			</form>
 			
-			<%-- <div class="replayArea">
+			<br>
+			
+			<div class="replayArea">
+				<div class="replyInput">
+					<form name= "reply">
+					<input type="hidden" name="qidx" value="<%=qidx%>">
+						<p>
+							<label>
+								내용 : <input type="text" size="50" name="qrcontent">
+							</label>
+						</p>
+						<p>
+							<input type="button" value="저장" onclick="loginFn()">
+						</p>
+					
+					</form>
+				</div> 
+				
 				<div class="replyList">
 				<table border="1" id="reply"> 
 					<tbody>
 						<% for(Reply r : rList){ %>
 								<tr>
-									<td><%=r.getMembername()%><input type='hidden' name='ridx' value='"<%=r.getRidx()%>"'></td>
-									<td><%=r.getRcontent()%></td>
+									<td><%=r.getMname()%><input type='hidden' name='qridx' value='<%=r.getQridx()%>'></td>
+									<td><%=r.getQrcontent()%></td>
 									
-									<% if(login != null && (login.getMidx() == r.getMidx())){ %>
+									<% if(login != null && (login.getMidx() == r.getMidx()) || mgrade.equals("A")){ %>
 									<td>
 										<input type="button" value="수정" onclick='modifyFn(this)'>
 										<input type="button" value="삭제" onclick='deleteFnReply(this)'>
@@ -142,25 +181,9 @@
 					</tbody>
 				</table>
 				</div>
-				<div class="replyInput">
-					<form name= "reply">
-					<input type="hidden" name="bidx" value="<%=bidx%>">
-						<p>
-							<label>
-								내용 : <input type="text" size="50" name="rcontent">
-							</label>
-						</p>
-						<p>
-							<input type="button" value="저장" onclick="loginFn()">
-						</p>
-					
-					</form>
-				</div> --%>
-		
-	
-		
-		
+				</div>
 	</div>
+	
 	<div class="divleft">
 		<% if(login == null) {%>
 			<a href="/stationTest/login/login.jsp">로그인</a>
@@ -218,6 +241,131 @@
 	<%@ include file="../footer.jsp" %>
 
 	<script>
+	var midx = 0;
+	
+	<% 
+		if(login !=null){
+			
+	%>
+		midx= <%=login.getMidx()%>
+		
+		
+	<%
+		}
+	%>
+	
+	
+	
+	var clickBtn;
+	
+	function loginFn(){
+		
+		var login = '<%=login%>';
+		var qidx = $()
+		if(login == 'null'){
+			alert("로그인후 이용해 주십시요.");
+			
+		}else if(login != 'null'){
+			$.ajax({
+				url: "reply.jsp",
+				type: "post",
+				data: $("form[name='reply']").serialize(),
+				success: function(data){
+					var json = JSON.parse(data.trim());
+					var html = "";
+					html +="<tr>";
+					html +="<td>"+json[0].mname+"<input type='hidden' name='qridx' value='"+json[0].qridx+"'></td>";
+					html +="<td>"+json[0].qrcontent+"</td>";
+					html +="<td>"
+					
+					if(midx== json[0].midx){
+						html +="<input type='button' value='수정' onclick='modifyFn(this)'>";
+						html +=" <input type='button' value='삭제' onclick='deleteFnReply(this)'>";
+					}
+					
+					html +="</td>";
+					html +="</tr>";
+					
+					$("#reply>tbody").prepend(html);
+					
+					document.reply.reset();
+					
+				}
+			})
+		}
+		
+	}
+	
+	function modifyFn(obj){
+		clickBtn = obj;
+		
+		if(clickBtn != null){
+		var qrcontent = $(obj).parent().prev().html();
+		$(obj).parent().prev().html("<input type='text' name='qrcontent' value='"+qrcontent+"'><input type='hidden' name='origin' value='"+qrcontent+"'>");
+		$(obj).parent().html("<input type='button' value='등록' onclick='updateReply(this)'> <input type='button' value='취소' onclick='cancleReply(this)'>");
+		
+		
+		};
+	}
+	
+	function cancleReply(obj){
+		var originContent = $(obj).parent().prev().find("input[name='origin']").val();
+		$(obj).parent().prev().html(originContent);
+		var html = "";
+			html += "<input type='button' value='수정' onclick='modifyFn(this)'>";
+			html += " <input type='button' value='삭제' onclick='deleteFnReply(this)'>";
+			
+		$(obj).parent().html(html);
+	}
+	
+	
+	function updateReply(obj){
+		var qridx = $(obj).parent().prev().prev().find("input:hidden").val();
+		var qrcontent = $(obj).parent().prev().find("input:text").val();
+		
+		$.ajax({
+			url: "updateReply.jsp",
+			type : "post",
+			data : "qridx="+qridx+"&qrcontent="+qrcontent,
+			success : function(data){
+				$(obj).parent().prev().html(qrcontent);
+				
+				
+				var html = "<input type='button' value='수정' onclick='modifyFn(this)'>";
+				html += " <input type='button' value='삭제' onclick='deleteFnReply(this)'>";	
+			
+			
+				$(obj).parent().html(html);
+			}
+						
+		});
+		
+		
+	}
+	
+	function deleteFnReply(obj){
+		var YN = confirm("정말 삭제하시겠습니까?");
+		
+		
+		if(YN){
+		var qridx = $(obj).parent().prev().prev().find("input:hidden").val();
+		$.ajax({
+			url : "deleteReply.jsp",
+			type : "post",
+			data : "qridx="+qridx,
+			success : function(){
+				$(obj).parent().parent().remove();
+				
+				
+			}
+		});
+		}
+		
+		
+		
+	}
+	
+	
 	function goModify(){
 		var login = '<%=login%>';
 		if(login != 'null' && login.getMidx() == midx_){

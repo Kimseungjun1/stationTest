@@ -48,15 +48,6 @@
 		
 		sql = "select count(*) as total from qna ";
 		
-			if(searchValue != null && !searchValue.equals("") && !searchValue.equals("null")){
-			
-			if(searchType.equals("qtitle")){
-				sql += " where qtitle like '%"+searchValue+"%'";	
-			}
-			
-				    			
-			}
-			
 		psmt = conn.prepareStatement(sql);
 		rs = psmt.executeQuery();
 		
@@ -79,6 +70,8 @@
 					
 					if(searchType.equals("qtitle")){
 						sql += " where qtitle like '%"+searchValue+"%'";	
+					}else if(searchType.equals("mname")){
+						sql += " where mname like '%"+searchValue+"%'";
 					}
 															
 				}
@@ -161,7 +154,7 @@
 			if(paging.getStartPage() > 1){
 		%>
 		
-			<a href="list.jsp?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
+			<a href="qnalist.jsp?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
 		
 		<%
 			}
@@ -175,7 +168,7 @@
 			}else{
 		%>
 			
-			<a href="list.jsp?nowPage=<%=i%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%=i %></a>
+			<a href="qnalist.jsp?nowPage=<%=i%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%=i %></a>
 		
 		<%
 			}
@@ -183,7 +176,7 @@
 			if(paging.getEndPage() != paging.getLastPage()){
 		%>
 		
-			<a href="list.jsp?nowPage=<%=paging.getStartPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
+			<a href="qnalist.jsp?nowPage=<%=paging.getStartPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
 		
 		<%
 			}

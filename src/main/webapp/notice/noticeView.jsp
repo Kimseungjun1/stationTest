@@ -42,14 +42,7 @@
 	String sql = "";
 		
 	sql = "select count(*) as total from noticeT ";
-		if(searchValue != null && !searchValue.equals("") && !searchValue.equals("null")){
 		
-		if(searchType.equals("nttile")){
-			sql += " where nttile like '%"+searchValue+"%'";	
-		}
-		
-			    			
-		}
 			psmt = conn.prepareStatement(sql);
 			
 			rs = psmt.executeQuery();
@@ -112,29 +105,7 @@
 				   
 					<option value="nttitle" <%if(searchType != null && searchType.equals("nttitle")) out.print("selected"); %>>글제목</option>
 					<option value="ntwriter" <%if(searchType != null && searchType.equals("ntwriter")) out.print("selected"); %>>작성자</option>	
-								<!-- 
 								
-								if(searchType != null){
-									if(searchType.equals("subject")){
-									
-										<option> value="subject" selected>글제목</option>
-										<option> value="writer">작성자</option>searchValue
-										
-									}
-									
-									else if(searchType.equals("writer")){
-										
-										<option> value="subject" selected>글제목</option>
-										<option> value="writer">작성자</option>
-									
-									
-									}else{
-										
-										<option> value="subject" selected>글제목</option>
-										<option> value="writer">작성자</option>
-									
-									}
-								 -->
 				</select>
 			
 				<input type="text" name="searchValue" 
@@ -186,7 +157,7 @@
 			if(paging.getStartPage() > 1){
 		%>
 		
-			<a href="list.jsp?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
+			<a href="noticeView.jsp?nowPage=<%=paging.getStartPage()-1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&lt;</a>
 		
 		<%
 			}
@@ -200,7 +171,7 @@
 			}else{
 		%>
 			
-			<a href="list.jsp?nowPage=<%=i%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%=i %></a>
+			<a href="noticeView.jsp?nowPage=<%=i%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>"><%=i %></a>
 		
 		<%
 			}
@@ -208,7 +179,7 @@
 			if(paging.getEndPage() != paging.getLastPage()){
 		%>
 		
-			<a href="list.jsp?nowPage=<%=paging.getStartPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
+			<a href="noticeView.jsp?nowPage=<%=paging.getStartPage()+1%>&searchType=<%=searchType%>&searchValue=<%=searchValue%>">&gt;</a>
 		
 		<%
 			}

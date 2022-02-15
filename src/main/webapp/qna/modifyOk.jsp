@@ -3,6 +3,7 @@
     <%@ page import ="java.sql.*" %>
     <%@ page import="boardWeb.vo.*" %>
 	<%@ page import="boardWeb.util.*" %>
+	
     
 <%
 	request.setCharacterEncoding("UTF-8");
