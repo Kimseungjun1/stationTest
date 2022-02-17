@@ -19,9 +19,10 @@
 				<div class="createheader">회원가입</div>
 				<div class="createtitle">아이디<span class="red">*</span></div>
 				<div>
-					<input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요.">
-					<input type="button" value="id 중복확인">
-					<span class="check"></span>
+					<input type="text" name="mid" id="mid" placeholder="아이디를 입력하세요." check_result="fail">
+					<input type="button" class="midcheck" value="id 중복확인" onclick="idCheck(this)">
+					<img id="checkS" style="display:none;" src="check.png" width="50px">
+					<span class="check" class="midspan"></span>
 				</div>
 				<div class="createtitle">비밀번호<span class="red">*</span></div>
 				<div>
@@ -84,10 +85,14 @@
 	<%@ include file = "../footer.jsp" %>
 	<script>
 	var createCount = false;
+	var result = null;
+	var checkps = "";
+	var checkpscheck ="";
+	var checkname = "";
+	var checkbrith = "";
+	var checkphone = "";
+	var checkemail = "";
 	
-	
-		/* var frm = document.getElementById('frm').submit(); */
-		
 		$(document).ready(function(){
 			$("#mid").blur(function(){
 				
@@ -98,12 +103,12 @@
 					$(this).parent().children(".check").css("display","inline").html("*필수").css("color","red");
 
 				}else if(!checkId.test(value)){
-					$(this).next().next().css("display","inline").html("*형식 오류").css("color","red");
+					$(this).next().next().next().css("display","inline").html("*형식 오류").css("color","red");
 
 				}
 				else{
 					
-					$(this).next().next().css("display","none");
+					$(this).next().next().next().css("display","none");
 				}
 			});
 
@@ -118,6 +123,7 @@
 				}
 				else{
 					$(this).next().css("display","none");
+					checkps = "c";
 				}
 
 			});
@@ -134,12 +140,14 @@
 
 				else{
 					$(this).next().css("display","none");
+					
+					checkpscheck = "c";
 				}
 			});
 
 			$("#mname").blur(function(){
 				var value = $(this).val();
-				var checkName = /^[가-힣]$/g;
+				var checkName = /^[가-힣]+$/;
 				if(value ==""){
 					$(this).next().css("display","inline").html("*필수").css("color","red");
 				}
@@ -148,6 +156,7 @@
 				}
 				else{
 					$(this).next().css("display","none");
+					checkname = "c";
 				}
 			});
 
@@ -162,6 +171,7 @@
 				}
 				else{
 					$(this).next().css("display","none");
+					checkemail = "c";
 				}
 
 			});
@@ -177,6 +187,7 @@
 				}
 				else{
 					$(this).next().css("display","none");
+					checkphone = "c";
 				}
 			
 			});
@@ -192,6 +203,7 @@
 				}
 				else{
 					$(this).next().css("display","none");
+					checkbrith = "c";
 				}
 			
 			});
@@ -201,13 +213,77 @@
 		});
 		
 		function goMake(){
+			console.log(checkps);
+			console.log(checkpscheck);
+			console.log(checkname);
+			console.log(checkbrith);
+			console.log(checkemail);
+			console.log(checkphone);
 			
-			if(){
-								
+			
+			if(createCount==false){
+				
+				alert("필수 * 요소들을 입력해 주십시오.");
 			}
+			
+			
+			if(createCount==true && result == "" &&
+			checkps =="c" &&
+			checkpscheck =="c" &&
+			checkname  =="c" &&
+			checkbrith =="c" &&
+			checkphone =="c" &&
+			checkemail =="c"
+			){
+			document.getElementById('frm').submit();
+			}else{
+				alert("ID 중복체크 확인요망.");
+			}
+			
 			
 		}
 		
+		
+		function idCheck(obj){
+			$('#mid').change(function(){
+				$('#checkS').hide();
+				$('.midcheck').show();
+				$('#mid').attr("check_result","fail");
+				createCount=false;
+				
+			})
+			
+			if($(obj).prev().val() == ''){
+				alert('아이디를 입력해주세요.');
+				return;
+			}
+			
+			var mid= document.getElementById("mid").value;
+			
+			if(mid !=""){
+				$.ajax({
+					url : "idCheck.jsp",
+					type : "post",
+					data : "mid="+mid,
+					success : function(data){
+						result = data.trim();
+						console.log(result);
+						if(mid!==result){
+							alert("중복되지않은 아이디입니다.");
+							
+							$('#checkS').css("display","inline")
+							createCount = true;
+							
+							
+						}else if(mid==result){
+							alert("중복된 아이디입니다.");
+						}
+					}
+				});
+			}
+			
+					
+		}
 	
 	</script>
 

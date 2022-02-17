@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>황윤제</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		function calFn(){
+			var calsort = $('input[name="cal"]:checked').val();
+			var val1 = parseFloat(document.getElementById('val1').value);
+			var val2 = parseFloat(document.getElementById('val2').value);
+			if((val1 != "" && !isNaN(val1)) && (val2 != "" && !isNaN(val2))){
+				$.ajax({
+					url : "cal_03.jsp",
+					type : "post",
+					data : "val1=" + val1 + "&val2=" + val2 + "&calsort=" + calsort,
+					success : function(data){
+						var result = parseFloat(data.trim());
+						document.getElementById('result').value = result;
+					}
+				});
+			}else{
+				alert("수만 빈칸없이 입력하세요");
+			}
+		}
+		function resetFn(){
+			document.getElementById('val1').value = "";
+			document.getElementById('val2').value = "";
+			document.getElementById('result').value = "";
+			document.getElementsByName("cal")[0].checked = true;
+		}
+	</script>
+	<style type="text/css">
+		#calbox{
+			width: 400px;
+			border: 1px solid;
+			margin: 30px auto;
+			padding: 20px;
+		}
+		h2{
+			margin-top: 0px;
+			text-align: center;
+		}
+		#caltable{
+			font-weight: bold;
+		}
+		#caltable .col1{
+			padding: 7px 5px;
+		}
+		#caltable input[type='text']{
+			width: 112px;
+			height: 20px;
+			border: 1px solid;
+		}
+		#caltable .col2{
+			width: 115px;
+		}
+		#caltable label{
+			font-size: 12px;
+		}
+		#caltable button{
+			width: 118px;
+			height: 24px;
+			border: 1px solid;
+		}
+	</style>
+</head>
+<body>
+	<div id="calbox">
+		<h2>계산기</h2>
+		<table id="caltable">
+			<tr>
+				<td class="col1">입력값1 : </td>
+				<td class="col2"><input type="text" id="val1" value=""></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td class="col1">입력값2 : </td>
+				<td class="col2"><input type="text" id="val2" value=""></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan="2">
+					<label>
+						<input type="radio" name="cal" value="plus" checked> 덧셈
+					</label>
+					<label>
+						<input type="radio" name="cal" value="minus"> 뺄셈
+					</label>
+					<label>
+						<input type="radio" name="cal" value="multi"> 곱셈
+					</label>
+					<label>
+						<input type="radio" name="cal" value="divide"> 나눗셈
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button onclick="calFn()">계산하기</button></td>
+				<td><button onclick="resetFn()">초기화</button></td>
+			</tr>
+			<tr>
+				<td class="col1">계산결과 : </td>
+				<td class="col2"><input type="text" id="result" value=""></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

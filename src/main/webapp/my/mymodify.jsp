@@ -108,6 +108,7 @@
 					<span class="check"></span>
 				</div>
 		
+			<input type="button" value="취소" onclick="location.href='mylist.jsp?midx=<%=midx %>'">
 			<input type="submit" value="저장">
 		</form>
 			
