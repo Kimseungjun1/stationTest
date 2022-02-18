@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-html{
-	
-}
-
 header{
 	/*머릿말*/
 
@@ -27,11 +23,6 @@ a{
 	text-decoration-line : none;
 	text-decoration-color : nomall;
 }
-
-b{
-	
-}
-
 
 .homeArea{
 	position:absolute;
@@ -96,6 +87,6 @@ section{
 	border-right:1px solid black;
 	
 }
-
+	
 
 

@@ -13,8 +13,7 @@
     	<table class="menubar">
     		<tr>
     			<td><a href="/stationTest/notice/noticeView.jsp">공지사항</a></td>
-    			<!-- href = " /" 를 붙이고하면 localhost:8080/에서부터 시작 -->
-    			<td><a>전라북도</a></td>
+    			<td><a href="/stationTest/jeonbuk/list.jsp">전라북도</a></td>
     			<td><a href="/stationTest/qna/qnalist.jsp">Q&A</a></td>
     			<%if(loginH != null) {%>
     			<td><a href="/stationTest/my/mycheck.jsp">마이페이지</a></td>

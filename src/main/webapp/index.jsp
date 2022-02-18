@@ -207,7 +207,7 @@
 	 			<td><a href="notice/noticeView.jsp">공지사항</a></td>
 	 		</tr>
 	 		<tr>
-	 			<td><a>전라북도</a></td>
+	 			<td><a href="/stationTest/jeonbuk/list.jsp">전라북도</a></td>
 	 		</tr>
 	 		<tr>
 	 			<td><a href="/stationTest/qna/qnalist.jsp">Q&A</a></td>
